@@ -45,7 +45,7 @@ Note that the UDFBench schema contains denormalized features such as nested attr
 
 The ER-diagram of the UDFBench schema is as follows:
 
-<img src="https://github.com/johnfouf/udfbench/blob/main/figs/schema.png" alt="Dataset Schema" width="700px">
+<img src="figs/schema.png" alt="Dataset Schema" width="700px">
 
 ### Dataset ###
 
