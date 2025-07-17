@@ -59,12 +59,15 @@ shift
 
 DISK="$1"
 
+DATASETSPATH=$DATASETSPATHSSD
 EXTERNALPATH=$EXTERNALPATHSSD
 if [ $DISK = "ssd" ]; then
     true
 elif [ $DISK = "hdd" ]; then
+    DATASETSPATH=$DATASETSPATHHDD
     EXTERNALPATH=$EXTERNALPATHHDD
 elif [ $DISK = "mem" ]; then
+    DATASETSPATH=$DATASETSPATHMEM
     EXTERNALPATH=$EXTERNALPATHMEM
 fi
 
@@ -110,7 +113,6 @@ if [ ${#sql_files[@]} -eq 0 ]; then
     exit 1
 fi
 
-
 source "$PWD"/engines/"$SYSTEM"/scripts/"$SYSTEM"_config.sh
 
-"$PWD"/engines/"$SYSTEM"/scripts/run_experiment.sh "$DATABASE" "$NTHREADS" "$CACHE" "$DISK" "$COLLECTL" "$EXTERNALPATH" "$PYTHONEXEC" "${sql_files[@]}"
+"$PWD"/engines/"$SYSTEM"/scripts/run_experiment.sh "$DATABASE" "$NTHREADS" "$CACHE" "$DISK" "$COLLECTL" "$DATASETSPATH" "$EXTERNALPATH" "$PYTHONEXEC" "${sql_files[@]}"

@@ -1,8 +1,8 @@
 #!/bin/bash
 cores=$(nproc)
 # Check if the correct number of arguments is provided
-if [ "$#" -lt 8 ]; then
-    echo "Usage: $0 <database_file> <threads> <cache> <disk> <collectl> <externalpath> <pythonexec> <query_file1> [<query_file2> ...]"
+if [ "$#" -lt 9 ]; then
+    echo "Usage: $0 <database_file> <threads> <cache> <disk> <collectl> <datasetpath> <externalpath> <pythonexec> <query_file1> [<query_file2> ...]"
     exit 1
 fi
 
@@ -58,6 +58,9 @@ shift
 
 
 COLLECTL="$1"
+shift
+
+DATASETSPATH="$1"
 shift
 
 EXTERNALPATH="$1"
