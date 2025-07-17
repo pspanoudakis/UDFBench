@@ -84,13 +84,20 @@ if [ ! -d "$TARGET_DIR" ]; then
     exit 1
 fi
 
-sql_files=()
+query_files=()
+if [[ "$SYSTEM" == "pandas" || "$SYSTEM" == "polars" ]]; then
+    # for pandas-like systems, we expect .py query files
+    query_extension="py"
+else
+    # we assume .sql query files for others
+    query_extension="sql"
+fi
 
 if [ "$#" -gt 0 ]; then
     for arg in "$@"; do
-        query_file="$PWD/engines/$SYSTEM/queries/q$arg.sql"
+        query_file="$PWD/engines/$SYSTEM/queries/q$arg.$query_extension"
         if [ -f "$query_file" ]; then
-            sql_files+=("$(realpath "$query_file")") 
+            query_files+=("$(realpath "$query_file")") 
         else
             echo "Warning: '$arg' is not a valid query number. Skipping."
         fi
@@ -103,16 +110,16 @@ else
 
     while IFS= read -r -d $'\0' file; do
         full_path=$(realpath "$file") 
-        sql_files+=("$full_path")  
-    done < <(find "$TARGET_DIR" -maxdepth 1 -type f -name "*.sql" -print0)
+        query_files+=("$full_path")  
+    done < <(find "$TARGET_DIR" -maxdepth 1 -type f -name "q*.$query_extension" -print0)
 
 fi
 
-if [ ${#sql_files[@]} -eq 0 ]; then
-    echo "No .sql files found in the directory: $TARGET_DIR"
+if [ ${#query_files[@]} -eq 0 ]; then
+    echo "No .$query_extension query files found in the directory: $TARGET_DIR"
     exit 1
 fi
 
 source "$PWD"/engines/"$SYSTEM"/scripts/"$SYSTEM"_config.sh
 
-"$PWD"/engines/"$SYSTEM"/scripts/run_experiment.sh "$DATABASE" "$NTHREADS" "$CACHE" "$DISK" "$COLLECTL" "$DATASETSPATH" "$EXTERNALPATH" "$PYTHONEXEC" "${sql_files[@]}"
+"$PWD"/engines/"$SYSTEM"/scripts/run_experiment.sh "$DATABASE" "$NTHREADS" "$CACHE" "$DISK" "$COLLECTL" "$DATASETSPATH" "$EXTERNALPATH" "$PYTHONEXEC" "${query_files[@]}"
