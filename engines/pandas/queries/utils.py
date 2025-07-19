@@ -87,8 +87,8 @@ class PandasQueryBase(ABC):
         usecols: Iterable[str] | None,
         data_format: SupportedDataFormat,
     ) -> pandas.DataFrame:
-        path = PandasQueryBase.__create_data_file_path__(
-            dataset_path, filename_no_ext, data_format
+        path = f'{dataset_path}/{filename_no_ext}' + (
+            f'.{data_format}' if data_format != 'parquet' else ''
         )
         match data_format:
             case 'csv':

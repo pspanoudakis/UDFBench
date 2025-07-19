@@ -84,7 +84,10 @@ class PolarsQueryBase(ABC):
         select_cols: Iterable[str] | None = None,
     ) -> pl.LazyFrame:
         path = PolarsQueryBase.__create_data_file_path__(
-            dataset_path, f'{filename_no_ext}.{data_format}'
+            dataset_path,
+            filename_no_ext + (
+                f'.{data_format}' if data_format != 'parquet' else ''
+            )
         )
         match data_format:
             case 'csv':
