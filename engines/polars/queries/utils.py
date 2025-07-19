@@ -149,7 +149,7 @@ class PolarsQueryBase(ABC):
         res = fn()
         end = time.time()
         print(f'[END]: {msg} - {datetime.datetime.fromtimestamp(end, datetime.timezone(datetime.timedelta(hours=3))).strftime("%H:%M:%S")}')
-        print(f'{(msg and (msg + " ")) or ""}Execution Time: {(end-start)*1000} ms')
+        print(f'{msg or "Time Elapsed"}: {(end-start)*1000} ms')
         return res
     
     def exec(
@@ -163,7 +163,7 @@ class PolarsQueryBase(ABC):
                 lambda: self.__exec__(
                     dataset_path, data_format, external_data_path
                 ),
-                'Polars'
+                'Polars Execution Time'
             )            
         )))
     

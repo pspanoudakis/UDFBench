@@ -167,7 +167,7 @@ class PandasQueryBase(ABC):
         res = fn()
         end = time.time()
         print(f'[END]: {msg} - {datetime.datetime.fromtimestamp(end, datetime.timezone(datetime.timedelta(hours=3))).strftime("%H:%M:%S")}')
-        print(f'{(msg and (msg + " ")) or ""}Execution Time: {(end-start)*1000} ms')
+        print(f'{msg or "Time Elapsed"}: {(end-start)*1000} ms')
         return res
     
     def __modin_init__(self):
@@ -198,9 +198,6 @@ class PandasQueryBase(ABC):
         match self.pd_module:
             case 'modin':
                 self.__time_fn__(lambda: self.__modin_init__(), 'Modin Init')
-            case 'fireducks':
-                import fireducks.pandas
-                self.pd = fireducks.pandas
             case 'pandas':
                 import pandas
                 self.pd = pandas
@@ -214,7 +211,7 @@ class PandasQueryBase(ABC):
                 lambda: self.__exec__(
                     dataset_path, data_format, external_data_path
                 ),
-                self.pd_module.capitalize()
+                f"{self.pd_module.capitalize()} Execution Time"
             )            
         )))
     
@@ -237,7 +234,7 @@ class PandasQueryBase(ABC):
         print('Results length: ' + str(len(
             self.__time_fn__(
                 __execUsingCtx__,
-                self.pd_module.capitalize()
+                f"{self.pd_module.capitalize()} Execution Time"
             )            
         )))    
     
