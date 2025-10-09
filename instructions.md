@@ -87,6 +87,14 @@ Here follows an example:
 - `POSTGRESRESULTSPATH`: Logs/results path  
   _Example_: `export POSTGRESRESULTSPATH=$PWD'/results/logs/postgres'`
 
+##### Pandas
+
+- `DFENGINE`: Choose underlying `DataFrame` engine (`pandas` or `modin`)  
+_Example_: `export DFENGINE="pandas"`
+
+- `PANDASDATAFORMAT`: Choose to read data from `csv` or `parquet` files  
+_Example_: `export PANDASDATAFORMAT="csv"`
+
 ---
 
 
